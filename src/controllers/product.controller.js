@@ -6,6 +6,27 @@ exports.addProduct = async function (req, res) {
     let response = await newProduct.save();
     return res.status(200).json(response)
 }
+exports.getProducts = async function (req,res) {
+  try {
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page - 1) * limit;
+    const [products, total] = await Promise.all([
+      Product.find().skip(skip).limit(limit),
+      Product.countDocuments()
+    ]);
+
+    return res.json({
+      page,
+      totalPages: Math.ceil(total / limit),
+      totalProducts: total,
+      products
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+}
 exports.editProduct = async function (req, res) {
     const productId = req.params.id;
     const updatedData = req.body;

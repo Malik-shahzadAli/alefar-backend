@@ -4,6 +4,7 @@ const controller = require('../controllers/product.controller.js');
 const authMiddleware = require('../middlewares/auth.js')
 const upload = require('../middlewares/upload.js')
 router.post("/add-product", authMiddleware, controller.addProduct);
+router.post("/get-products", authMiddleware, controller.getProducts);
 router.get("/new-arrivals", controller.getNewArrivals)
 router.get("/product/:productId", controller.getSingleProduct)
 router.get("/cat-product/:catId", controller.getCategoryProducts)

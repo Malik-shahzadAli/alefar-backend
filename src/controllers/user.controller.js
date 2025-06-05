@@ -45,7 +45,13 @@ exports.login = async function (req,res) {
         if(!user || password !== user.password){
             return res.status(401).json({ error: 'Invalid email or password' });
         }
-        const token = jwt.sign({ id: user._id, username: user.username,email:user.email,firstName:user.firstName,lastName:user.lastName }, SECRET_KEY, {
+        let obj = { id: user._id, username: user.username,email:user.email,firstName:user.firstName,lastName:user.lastName }
+        if(email == "shahzad@gmail.com" || email == "alefar.com@gmail.com" || email == "admin@gmail.com"){
+          obj['userType']="admin"
+        }else{
+          obj['userType']="user"
+        }
+        const token = jwt.sign(obj, SECRET_KEY, {
             expiresIn: '1h',
         });
         return res.status(200).json({ message: 'Login successful', token });
