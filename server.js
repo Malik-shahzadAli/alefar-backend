@@ -6,6 +6,7 @@ const connectDB = require('./src/config/connect-with-db.js')
 const authRoutes = require('./src/routes/auth.routes.js')
 const userRoutes = require('./src/routes/user.routes.js')
 const cartRoutes = require('./src/routes/cart.routes.js')
+const orderRoutes = require('./src/routes/order.routes.js')
 dotenv.config({ path: path.join(__dirname, "config", "config.env") });
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -28,6 +29,7 @@ app.use('/api/product', productRoutes);
 app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/cart', cartRoutes)
+app.use('/api/order', orderRoutes)
 
 app.get('/', (req,res)=>{
     return res.status(200).json({
