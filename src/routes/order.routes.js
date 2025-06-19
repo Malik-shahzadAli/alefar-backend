@@ -7,6 +7,8 @@ const authMiddleware = require('../middlewares/auth.js');
 router.post('/create', authMiddleware, controller.createOrder);
 // Get all orders (admin)
 router.get('/all', authMiddleware, controller.getAllOrders);
+//
+router.get('/hot-selling', controller.getHotSellingProducts);
 // Get a single order by ID
 router.get('/:id', authMiddleware, controller.getOrderById);
 // Get orders for the logged-in user
@@ -17,5 +19,7 @@ router.post('/update-status/:id', authMiddleware, controller.updateOrderStatus);
 router.delete('/delete/:id', authMiddleware, controller.deleteOrder);
 // Get orders of a specific status for the logged-in user
 router.get('/status', authMiddleware, controller.getOrdersByStatus);
+// Get hot selling products
 
+//pi/order/hot-selling
 module.exports = router;

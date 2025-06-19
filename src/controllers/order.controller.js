@@ -1,5 +1,6 @@
 const Order = require('../models/order.model');
 const Cart = require('../models/cart.model');
+const ProductStats = require('../models/productStats.model');
 
 // Create a new order
 exports.createOrder = async (req, res) => {
@@ -21,6 +22,29 @@ exports.createOrder = async (req, res) => {
       status: 'Pending',
     });
     const savedOrder = await order.save();
+
+    // Update product stats for each item
+    for (const item of cart.items) {
+      const stats = await ProductStats.findOne({ productId: item.productId });
+      if (stats) {
+        stats.totalSold += item.quantity;
+        if (!stats.customerIds.some(id => id.equals(userId))) {
+          stats.customerIds.push(userId);
+          stats.customerCount = stats.customerIds.length;
+        }
+        stats.updatedAt = new Date();
+        await stats.save();
+      } else {
+        await ProductStats.create({
+          productId: item.productId,
+          totalSold: item.quantity,
+          customerCount: 1,
+          customerIds: [userId],
+          updatedAt: new Date()
+        });
+      }
+    }
+
     // Remove the cart after order is placed
     await Cart.deleteOne({ userId });
     return res.status(201).json(savedOrder);
@@ -107,6 +131,20 @@ exports.getOrdersByStatus = async (req, res) => {
     }
     const orders = await Order.find({ userId, status }).populate('items.productId');
     return res.status(200).json(orders);
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: 'Server Error', err });
+  }
+};
+
+// Get hot selling products
+exports.getHotSellingProducts = async (req, res) => {
+  try {
+    const hotProducts = await ProductStats.find()
+      .sort({ totalSold: -1 })
+      .limit(10)
+      .populate('productId');
+    return res.status(200).json(hotProducts);
   } catch (err) {
     console.error(err);
     return res.status(500).json({ message: 'Server Error', err });
