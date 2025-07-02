@@ -7,6 +7,8 @@ const authRoutes = require('./src/routes/auth.routes.js')
 const userRoutes = require('./src/routes/user.routes.js')
 const cartRoutes = require('./src/routes/cart.routes.js')
 const orderRoutes = require('./src/routes/order.routes.js')
+const dealsRoutes = require('./src/routes/deals.routes.js')
+const stripeRoutes = require('./src/routes/stripe.routes.js')
 dotenv.config({ path: path.join(__dirname, "config", "config.env") });
 const PORT = process.env.PORT || 5000;
 const app = express();
@@ -30,6 +32,8 @@ app.use('/api/auth', authRoutes)
 app.use('/api/user', userRoutes)
 app.use('/api/cart', cartRoutes)
 app.use('/api/order', orderRoutes)
+app.use('/api/deals', dealsRoutes)
+app.use('/api/stripe', stripeRoutes)
 
 app.get('/', (req,res)=>{
     return res.status(200).json({

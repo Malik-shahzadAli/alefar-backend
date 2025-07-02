@@ -52,7 +52,7 @@ exports.login = async function (req,res) {
           obj['userType']="user"
         }
         const token = jwt.sign(obj, SECRET_KEY, {
-            expiresIn: '1h',
+            expiresIn: '1y',
         });
         return res.status(200).json({ message: 'Login successful', token });
 
