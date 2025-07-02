@@ -1,6 +1,6 @@
 const express = require('express');
-const dotenv = require('dotenv').config({ path: './' });;
 const path = require('path');
+const dotenv = require('dotenv').config({ path: path.join(__dirname, "/", ".env") });
 const productRoutes = require('./src/routes/product.routes.js')
 const connectDB = require('./src/config/connect-with-db.js')
 const authRoutes = require('./src/routes/auth.routes.js')
@@ -9,7 +9,6 @@ const cartRoutes = require('./src/routes/cart.routes.js')
 const orderRoutes = require('./src/routes/order.routes.js')
 const dealsRoutes = require('./src/routes/deals.routes.js')
 const stripeRoutes = require('./src/routes/stripe.routes.js')
-dotenv.config({ path: path.join(__dirname, "config", "config.env") });
 const PORT = process.env.PORT || 5000;
 const app = express();
 app.use(express.json());
