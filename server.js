@@ -1,5 +1,5 @@
 const express = require('express');
-const dotenv = require('dotenv');
+const dotenv = require('dotenv').config({ path: './' });;
 const path = require('path');
 const productRoutes = require('./src/routes/product.routes.js')
 const connectDB = require('./src/config/connect-with-db.js')
